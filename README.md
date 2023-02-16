@@ -1,9 +1,9 @@
-#aws cli installation
+# aws cli installation
 1. curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 2. unzip awscliv2.zip
 3. sudo ./aws/install
 --------------------------------------------------------------------------------
-#aws_cli
+# aws_cli
 1. aws ec2 create-key-pair --key-name MyKeyPair --query 'KeyMaterial' --output text > MyKeyPair.pem
 2. chmod 400 MyKeyPair.pem
 3. aws ec2 delete-key-pair --key-name MyKeyPair
@@ -18,22 +18,22 @@
 3. aws ec2 authorize-security-group-ingress --group-name my-sg --protocol tcp --port 80 --cidr 0.0.0.0/0
 4. aws ec2 describe-security-groups --group-names my-sg
 ----------------------------------------------------------------------------------------------------
-#Creating/Deleting EC2-Instance:
+# Creating/Deleting EC2-Instance:
 1. aws ec2 run-instances --image-id ami-0a8b4cd432b1c3063 --count 1 --instance-type t2.micro --key-name Sharath --security-group-ids sg-08f7061d2068b6df7
 2. aws ec2 create-tags --resources i-05ae4a2d82fcc2c8d --tags Key=Name,Value=Sharath
 3. aws ec2 terminate-instances --instance-ids i-05ae4a2d82fcc2c8d
 -------------------------------------------------------------------------------------------------------
-#Creating/Deleting Load-Balance:
+# Creating/Deleting Load-Balance:
 1.aws elb create-load-balancer --load-balancer-name sharath-load-balancer --listeners "Protocol=HTTP,LoadBalancerPort=80,InstanceProtocol=HTTP,InstancePort=80" --availability-zones us-east-1a us-east-1b --security-groups sg-08f7061d2068b6df7
 2. aws elb register-instances-with-load-balancer --load-balancer-name sharath-load-balancer --instances i-00f771807b71e967a
 3. aws elb delete-load-balancer --load-balancer-name sharath-load-balancer
 -----------------------------------------------------------------------------------------------------------
-#Creating/Deleting Amazon S3:
+# Creating/Deleting Amazon S3:
 1. aws s3 mb s3://bucket-name
 2. aws s3 rb s3://bucket-name
 3. Copying: aws s3 cp filename s3://bucket-name
 --------------------------------------------------------------------------------------------------------------
-#Creating VPC:
+# Creating VPC:
 1. aws ec2 create-vpc --cidr-block 192.0.0.0/16 --query Vpc.VpcId --output text
 2. aws ec2 create-subnet --vpc-id vpc-026695d0114ad1eed --cidr-block 192.0.1.0/24
 3. aws ec2 create-subnet --vpc-id vpc-026695d0114ad1eed --cidr-block 192.0.2.0/24
