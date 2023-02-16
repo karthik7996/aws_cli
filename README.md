@@ -4,46 +4,46 @@
 3. sudo ./aws/install
 --------------------------------------------------------------------------------
 #aws_cli
-#aws ec2 create-key-pair --key-name MyKeyPair --query 'KeyMaterial' --output text > MyKeyPair.pem
-#chmod 400 MyKeyPair.pem
-#aws ec2 delete-key-pair --key-name MyKeyPair
-#
------------------------------------------------------------------------------------------------
-1.Creating Key-Pair:
-aws ec2 create-key-pair --key-name Sharath --query 'KeyMaterial' --output text > Sharath.pem
+1. aws ec2 create-key-pair --key-name MyKeyPair --query 'KeyMaterial' --output text > MyKeyPair.pem
+2. chmod 400 MyKeyPair.pem
+3. aws ec2 delete-key-pair --key-name MyKeyPair
 
-2.Creating Security Group:
-aws ec2 create-security-group --group-name my-sg --description "My security group"
-aws ec2 authorize-security-group-ingress --group-name my-sg --protocol tcp --port 22 --cidr 0.0.0.0/0
-aws ec2 authorize-security-group-ingress --group-name my-sg --protocol tcp --port 80 --cidr 0.0.0.0/0
-aws ec2 describe-security-groups --group-names my-sg
+-----------------------------------------------------------------------------------------------
+# Creating Key-Pair:
+1. aws ec2 create-key-pair --key-name Sharath --query 'KeyMaterial' --output text > Sharath.pem
+
+# Creating Security Group:
+1. aws ec2 create-security-group --group-name my-sg --description "My security group"
+2. aws ec2 authorize-security-group-ingress --group-name my-sg --protocol tcp --port 22 --cidr 0.0.0.0/0
+3. aws ec2 authorize-security-group-ingress --group-name my-sg --protocol tcp --port 80 --cidr 0.0.0.0/0
+4. aws ec2 describe-security-groups --group-names my-sg
 ----------------------------------------------------------------------------------------------------
-3.Creating/Deleting EC2-Instance:
-aws ec2 run-instances --image-id ami-0a8b4cd432b1c3063 --count 1 --instance-type t2.micro --key-name Sharath --security-group-ids sg-08f7061d2068b6df7
-aws ec2 create-tags --resources i-05ae4a2d82fcc2c8d --tags Key=Name,Value=Sharath
-aws ec2 terminate-instances --instance-ids i-05ae4a2d82fcc2c8d
+#Creating/Deleting EC2-Instance:
+1. aws ec2 run-instances --image-id ami-0a8b4cd432b1c3063 --count 1 --instance-type t2.micro --key-name Sharath --security-group-ids sg-08f7061d2068b6df7
+2. aws ec2 create-tags --resources i-05ae4a2d82fcc2c8d --tags Key=Name,Value=Sharath
+3. aws ec2 terminate-instances --instance-ids i-05ae4a2d82fcc2c8d
 -------------------------------------------------------------------------------------------------------
-4.Creating/Deleting Load-Balance:
-aws elb create-load-balancer --load-balancer-name sharath-load-balancer --listeners "Protocol=HTTP,LoadBalancerPort=80,InstanceProtocol=HTTP,InstancePort=80" --availability-zones us-east-1a us-east-1b --security-groups sg-08f7061d2068b6df7
-aws elb register-instances-with-load-balancer --load-balancer-name sharath-load-balancer --instances i-00f771807b71e967a
-aws elb delete-load-balancer --load-balancer-name sharath-load-balancer
+#Creating/Deleting Load-Balance:
+1.aws elb create-load-balancer --load-balancer-name sharath-load-balancer --listeners "Protocol=HTTP,LoadBalancerPort=80,InstanceProtocol=HTTP,InstancePort=80" --availability-zones us-east-1a us-east-1b --security-groups sg-08f7061d2068b6df7
+2. aws elb register-instances-with-load-balancer --load-balancer-name sharath-load-balancer --instances i-00f771807b71e967a
+3. aws elb delete-load-balancer --load-balancer-name sharath-load-balancer
 -----------------------------------------------------------------------------------------------------------
-5.Creating/Deleting Amazon S3:
-aws s3 mb s3://bucket-name
-aws s3 rb s3://bucket-name
-Copying: aws s3 cp filename s3://bucket-name
+#Creating/Deleting Amazon S3:
+1. aws s3 mb s3://bucket-name
+2. aws s3 rb s3://bucket-name
+3. Copying: aws s3 cp filename s3://bucket-name
 --------------------------------------------------------------------------------------------------------------
-6.Creating VPC:
-aws ec2 create-vpc --cidr-block 192.0.0.0/16 --query Vpc.VpcId --output text
-aws ec2 create-subnet --vpc-id vpc-026695d0114ad1eed --cidr-block 192.0.1.0/24
-aws ec2 create-subnet --vpc-id vpc-026695d0114ad1eed --cidr-block 192.0.2.0/24
-aws ec2 create-internet-gateway --query InternetGateway.InternetGatewayId --output text
-aws ec2 attach-internet-gateway --vpc-id vpc-026695d0114ad1eed --internet-gateway-id igw-0eb1bc19394187004
-aws ec2 create-route-table --vpc-id vpc-026695d0114ad1eed --query RouteTable.RouteTableId --output text
-aws ec2 create-route --route-table-id rtb-0888cd56899632bd0 --destination-cidr-block 0.0.0.0/0 --gateway-id igw-0eb1bc19394187004
-aws ec2 describe-route-tables --route-table-id rtb-0888cd56899632bd0
-aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-026695d0114ad1eed" --query "Subnets[*].{ID:SubnetId,CIDR:CidrBlock}"
-aws ec2 associate-route-table  --subnet-id subnet-0c1c9f6c96182489f --route-table-id rtb-0888cd56899632bd0
+#Creating VPC:
+1. aws ec2 create-vpc --cidr-block 192.0.0.0/16 --query Vpc.VpcId --output text
+2. aws ec2 create-subnet --vpc-id vpc-026695d0114ad1eed --cidr-block 192.0.1.0/24
+3. aws ec2 create-subnet --vpc-id vpc-026695d0114ad1eed --cidr-block 192.0.2.0/24
+4. aws ec2 create-internet-gateway --query InternetGateway.InternetGatewayId --output text
+5. aws ec2 attach-internet-gateway --vpc-id vpc-026695d0114ad1eed --internet-gateway-id igw-0eb1bc19394187004
+6. aws ec2 create-route-table --vpc-id vpc-026695d0114ad1eed --query RouteTable.RouteTableId --output text
+7. aws ec2 create-route --route-table-id rtb-0888cd56899632bd0 --destination-cidr-block 0.0.0.0/0 --gateway-id igw-0eb1bc19394187004
+8. aws ec2 describe-route-tables --route-table-id rtb-0888cd56899632bd0
+9. aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-026695d0114ad1eed" --query "Subnets[*].{ID:SubnetId,CIDR:CidrBlock}"
+10. aws ec2 associate-route-table  --subnet-id subnet-0c1c9f6c96182489f --route-table-id rtb-0888cd56899632bd0
 ---------------------------------------------------------------------------------------------------------------------------
 aws ec2 create-vpc --cidr-block 10.0.0.0/16 --query Vpc.VpcId --output text
 aws ec2 create-subnet --vpc-id vpc-07e4ae66175b7f4e1 --cidr-block 10.0.1.0/24
