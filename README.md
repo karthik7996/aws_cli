@@ -24,7 +24,7 @@
 3. aws ec2 terminate-instances --instance-ids i-05ae4a2d82fcc2c8d
 -------------------------------------------------------------------------------------------------------
 # Creating/Deleting Load-Balance:
-1.aws elb create-load-balancer --load-balancer-name sharath-load-balancer --listeners "Protocol=HTTP,LoadBalancerPort=80,InstanceProtocol=HTTP,InstancePort=80" --availability-zones us-east-1a us-east-1b --security-groups sg-08f7061d2068b6df7
+1. aws elb create-load-balancer --load-balancer-name sharath-load-balancer --listeners "Protocol=HTTP,LoadBalancerPort=80,InstanceProtocol=HTTP,InstancePort=80" --availability-zones us-east-1a us-east-1b --security-groups sg-08f7061d2068b6df7
 2. aws elb register-instances-with-load-balancer --load-balancer-name sharath-load-balancer --instances i-00f771807b71e967a
 3. aws elb delete-load-balancer --load-balancer-name sharath-load-balancer
 -----------------------------------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-07e4ae66175b7f4e1" --
 aws ec2 associate-route-table  --subnet-id subnet-004a8fbe5ec6be5c8 --route-table-id rtb-05fc949bb4e81000f
 aws ec2 associate-route-table  --subnet-id subnet-0493b62c84bf851bd --route-table-id rtb-05fc949bb4e81000f
 -------------------------------------------------------------------------------------------------------------------------------
-7.Creating VPC peering:
+# Creating VPC peering:
 aws ec2 create-vpc-peering-connection --vpc-id vpc-07e4ae66175b7f4e1 --peer-vpc-id vpc-026695d0114ad1eed
 
 Deleting Vpc:
@@ -82,11 +82,11 @@ CloudFormation Script:
  }
 }
 
-8.Creating/Deleting CloudFormation:
+# Creating/Deleting CloudFormation:
 aws cloudformation create-stack --stack-name myteststack --template-body file://ec2_launching.json
 aws cloudformation delete-stack --stack-name myteststack
 ------------------------------------------------------------------------------------------------------------------------
-9.Creating/Deleting Lambda:
+# Creating/Deleting Lambda:
 Required Scripts:
 exports.handler = function(){
     console.log("sucess fully using cli");
@@ -106,22 +106,22 @@ aws lambda create-function \
 aws lambda delete-function \
     --function-name my-function
  
-10.Creating/Deleting IAM:
+# Creating/Deleting IAM:
 aws iam create-role --role-name lambda-sharath --assume-role-policy-document '{"Version": "2012-10-17","Statement": [{ "Effect": "Allow", "Principal": {"Service": "lambda.amazonaws.com"}, "Action": "sts:AssumeRole"}]}'
 aws iam delete-role --role-name lambda-sharath
 -------------------------------------------------------------------------------------------------------------------------------------
-11.Creating/Deleting CloudWatch:
+# Creating/Deleting CloudWatch:
 
-SNS subscribing:
+# SNS subscribing:
 aws sns create-topic --name sharath-sns
 aws sns subscribe --topic-arn arn:aws:sns:us-east-1:602011150591:sharath-sns --protocol email --notification-endpoint my-email-address
 aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:us-east-1:602011150591:sharath-sns
 
-Unsubscribing:
+# Unsubscribing:
 aws sns unsubscribe --subscription-arn arn:aws:sns:us-east-1:602011150591:sharath-sns:8a21d249-4329-4871-acc6-7be709c6ea7f
 aws sns delete-topic --topic-arn arn:aws:sns:us-east-1:602011150591:sharath-sns
 
-CloudWatch:
+# CloudWatch:
 aws cloudwatch put-metric-alarm --alarm-name cpu-mon --alarm-description "Alarm when CPU exceeds 70 percent" --metric-name CPUUtilization --namespace AWS/EC2 --statistic Average --period 300 --threshold 70 --comparison-operator GreaterThanThreshold  --dimensions "Name=InstanceId,Value=i-0687531b496d219ae" --evaluation-periods 2 --alarm-actions arn:aws:sns:us-east-1:602011150591:sharath-sns --unit Percent
 aws cloudwatch set-alarm-state --alarm-name sharath-alaram --state-reason "initializing" --state-value OK
 aws cloudwatch set-alarm-state --alarm-name sharath-alaram --state-reason "initializing" --state-value ALARM
