@@ -45,27 +45,27 @@
 9. aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-026695d0114ad1eed" --query "Subnets[*].{ID:SubnetId,CIDR:CidrBlock}"
 10. aws ec2 associate-route-table  --subnet-id subnet-0c1c9f6c96182489f --route-table-id rtb-0888cd56899632bd0
 ---------------------------------------------------------------------------------------------------------------------------
-aws ec2 create-vpc --cidr-block 10.0.0.0/16 --query Vpc.VpcId --output text
-aws ec2 create-subnet --vpc-id vpc-07e4ae66175b7f4e1 --cidr-block 10.0.1.0/24
-aws ec2 create-subnet --vpc-id vpc-07e4ae66175b7f4e1 --cidr-block 10.0.2.0/24
-aws ec2 create-internet-gateway --query InternetGateway.InternetGatewayId --output text
-aws ec2 attach-internet-gateway --vpc-id vpc-07e4ae66175b7f4e1 --internet-gateway-id igw-00ee7569aeec0c2ff
-aws ec2 create-route-table --vpc-id vpc-07e4ae66175b7f4e1 --query RouteTable.RouteTableId --output text
-aws ec2 create-route --route-table-id rtb-05fc949bb4e81000f --destination-cidr-block 0.0.0.0/0 --gateway-id igw-00ee7569aeec0c2ff
-aws ec2 describe-route-tables --route-table-id rtb-05fc949bb4e81000f
-aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-07e4ae66175b7f4e1" --query "Subnets[*].{ID:SubnetId,CIDR:CidrBlock}"
-aws ec2 associate-route-table  --subnet-id subnet-004a8fbe5ec6be5c8 --route-table-id rtb-05fc949bb4e81000f
-aws ec2 associate-route-table  --subnet-id subnet-0493b62c84bf851bd --route-table-id rtb-05fc949bb4e81000f
+1. aws ec2 create-vpc --cidr-block 10.0.0.0/16 --query Vpc.VpcId --output text
+2. aws ec2 create-subnet --vpc-id vpc-07e4ae66175b7f4e1 --cidr-block 10.0.1.0/24
+3. aws ec2 create-subnet --vpc-id vpc-07e4ae66175b7f4e1 --cidr-block 10.0.2.0/24
+4. aws ec2 create-internet-gateway --query InternetGateway.InternetGatewayId --output text
+5. aws ec2 attach-internet-gateway --vpc-id vpc-07e4ae66175b7f4e1 --internet-gateway-id igw-00ee7569aeec0c2ff
+6. aws ec2 create-route-table --vpc-id vpc-07e4ae66175b7f4e1 --query RouteTable.RouteTableId --output text
+7. aws ec2 create-route --route-table-id rtb-05fc949bb4e81000f --destination-cidr-block 0.0.0.0/0 --gateway-id igw-00ee7569aeec0c2ff
+8. aws ec2 describe-route-tables --route-table-id rtb-05fc949bb4e81000f
+9. aws ec2 describe-subnets --filters "Name=vpc-id,Values=vpc-07e4ae66175b7f4e1" --query "Subnets[*].{ID:SubnetId,CIDR:CidrBlock}"
+10. aws ec2 associate-route-table  --subnet-id subnet-004a8fbe5ec6be5c8 --route-table-id rtb-05fc949bb4e81000f
+11. aws ec2 associate-route-table  --subnet-id subnet-0493b62c84bf851bd --route-table-id rtb-05fc949bb4e81000f
 -------------------------------------------------------------------------------------------------------------------------------
 # Creating VPC peering:
-aws ec2 create-vpc-peering-connection --vpc-id vpc-07e4ae66175b7f4e1 --peer-vpc-id vpc-026695d0114ad1eed
+1. aws ec2 create-vpc-peering-connection --vpc-id vpc-07e4ae66175b7f4e1 --peer-vpc-id vpc-026695d0114ad1eed
 
 Deleting Vpc:
-aws ec2 delete-subnet --subnet-id subnet-0c1c9f6c96182489f
-aws ec2 delete-route-table --route-table-id rtb-0888cd56899632bd0
-aws ec2 detach-internet-gateway --internet-gateway-id igw-0eb1bc19394187004 --vpc-id vpc-026695d0114ad1eed
-aws ec2 delete-internet-gateway --internet-gateway-id igw-0eb1bc19394187004
-aws ec2 delete-vpc --vpc-id vpc-026695d0114ad1eed
+1. aws ec2 delete-subnet --subnet-id subnet-0c1c9f6c96182489f
+2. aws ec2 delete-route-table --route-table-id rtb-0888cd56899632bd0
+3. aws ec2 detach-internet-gateway --internet-gateway-id igw-0eb1bc19394187004 --vpc-id vpc-026695d0114ad1eed
+4. aws ec2 delete-internet-gateway --internet-gateway-id igw-0eb1bc19394187004
+5. aws ec2 delete-vpc --vpc-id vpc-026695d0114ad1eed
 
 
 CloudFormation Script:
@@ -83,8 +83,8 @@ CloudFormation Script:
 }
 
 # Creating/Deleting CloudFormation:
-aws cloudformation create-stack --stack-name myteststack --template-body file://ec2_launching.json
-aws cloudformation delete-stack --stack-name myteststack
+1. aws cloudformation create-stack --stack-name myteststack --template-body file://ec2_launching.json
+2. aws cloudformation delete-stack --stack-name myteststack
 ------------------------------------------------------------------------------------------------------------------------
 # Creating/Deleting Lambda:
 Required Scripts:
@@ -113,18 +113,18 @@ aws iam delete-role --role-name lambda-sharath
 # Creating/Deleting CloudWatch:
 
 # SNS subscribing:
-aws sns create-topic --name sharath-sns
-aws sns subscribe --topic-arn arn:aws:sns:us-east-1:602011150591:sharath-sns --protocol email --notification-endpoint my-email-address
-aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:us-east-1:602011150591:sharath-sns
+1. aws sns create-topic --name sharath-sns
+2. aws sns subscribe --topic-arn arn:aws:sns:us-east-1:602011150591:sharath-sns --protocol email --notification-endpoint my-email-address
+3. aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:us-east-1:602011150591:sharath-sns
 
 # Unsubscribing:
-aws sns unsubscribe --subscription-arn arn:aws:sns:us-east-1:602011150591:sharath-sns:8a21d249-4329-4871-acc6-7be709c6ea7f
-aws sns delete-topic --topic-arn arn:aws:sns:us-east-1:602011150591:sharath-sns
+1. aws sns unsubscribe --subscription-arn arn:aws:sns:us-east-1:602011150591:sharath-sns:8a21d249-4329-4871-acc6-7be709c6ea7f
+2. aws sns delete-topic --topic-arn arn:aws:sns:us-east-1:602011150591:sharath-sns
 
 # CloudWatch:
-aws cloudwatch put-metric-alarm --alarm-name cpu-mon --alarm-description "Alarm when CPU exceeds 70 percent" --metric-name CPUUtilization --namespace AWS/EC2 --statistic Average --period 300 --threshold 70 --comparison-operator GreaterThanThreshold  --dimensions "Name=InstanceId,Value=i-0687531b496d219ae" --evaluation-periods 2 --alarm-actions arn:aws:sns:us-east-1:602011150591:sharath-sns --unit Percent
-aws cloudwatch set-alarm-state --alarm-name sharath-alaram --state-reason "initializing" --state-value OK
-aws cloudwatch set-alarm-state --alarm-name sharath-alaram --state-reason "initializing" --state-value ALARM
+1. aws cloudwatch put-metric-alarm --alarm-name cpu-mon --alarm-description "Alarm when CPU exceeds 70 percent" --metric-name CPUUtilization --namespace AWS/EC2 --statistic Average --period 300 --threshold 70 --comparison-operator GreaterThanThreshold  --dimensions "Name=InstanceId,Value=i-0687531b496d219ae" --evaluation-periods 2 --alarm-actions arn:aws:sns:us-east-1:602011150591:sharath-sns --unit Percent
+2. aws cloudwatch set-alarm-state --alarm-name sharath-alaram --state-reason "initializing" --state-value OK
+3. aws cloudwatch set-alarm-state --alarm-name sharath-alaram --state-reason "initializing" --state-value ALARM
 
 Deleting:
 aws cloudwatch delete-metric-stream --name sharath-alaram
